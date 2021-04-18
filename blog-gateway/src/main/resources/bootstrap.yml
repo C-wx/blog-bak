@@ -1,0 +1,12 @@
+spring:
+  application:
+    name: blog-gateway
+  cloud:
+    nacos:
+      config:
+        server-addr: 192.168.108.100:30002
+        file-extension: yaml
+        namespace: 33bed35c-2d36-475e-b22b-5e23228eeb80
+        group: BLOG_GROUP
+  main:
+    allow-bean-definition-overriding: true
