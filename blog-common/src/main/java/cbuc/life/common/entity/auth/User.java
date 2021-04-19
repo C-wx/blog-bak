@@ -1,6 +1,7 @@
 package cbuc.life.common.entity.auth;
 
 import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import io.swagger.annotations.ApiModel;
@@ -8,6 +9,7 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 /**
  * @author: cbuc
@@ -24,7 +26,7 @@ public class User {
     private Integer id;
 
     @ApiModelProperty("用户名")
-    private Integer userName;
+    private String userName;
 
     @ApiModelProperty("用户密码")
     private String userPwd;
@@ -50,4 +52,9 @@ public class User {
     @ApiModelProperty(value = "是否禁用登录", notes = "0: 禁用 1：启用")
     private String loginEnable;
 
+    /****************************************非表字段****************************************/
+
+    @TableField(exist = false)
+    @ApiModelProperty("用户角色集合")
+    private List<Role> roles;
 }
