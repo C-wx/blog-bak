@@ -37,6 +37,7 @@
         <knife4j.version>2.0.8</knife4j.version>
         <apache.common.version>3.7</apache.common.version>
         <hutool.version>5.6.3</hutool.version>
+        <collections4.version>4.1</collections4.version>
     </properties>
 
     <dependencyManagement>
@@ -134,6 +135,11 @@
             <groupId>cn.hutool</groupId>
             <artifactId>hutool-all</artifactId>
             <version>${hutool.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-collections4</artifactId>
+            <version>${collections4.version}</version>
         </dependency>
     </dependencies>
 

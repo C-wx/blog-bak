@@ -1,4 +1,4 @@
-package cbuc.life.gateway.config;
+package cbuc.life.gateway.config.shiro;
 
 import cbuc.life.common.entity.auth.Permissions;
 import cbuc.life.common.entity.auth.Role;

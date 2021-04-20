@@ -24,16 +24,26 @@ public enum ResponseEnum {
      */
     ERROR(-101, "操作失败"),
 
+    /**
+     * 用户未登录异常响应
+     */
+    NOT_LOGIN(-102, "用户未登录"),
+
+    /**
+     * 认证信息为空异常响应类
+     */
+    TOKEN_IS_NULL(-103, "认证信息不能为空"),
+
     ;
 
     /**
      * 响应状态码
      */
-    private Integer code;
+    private final Integer code;
 
     /**
      * 响应信息
      */
-    private String message;
+    private final String message;
 
 }
