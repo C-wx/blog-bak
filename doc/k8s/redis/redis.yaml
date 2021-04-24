@@ -1,0 +1,58 @@
+#reids deployment
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: redis-deploy
+  namespace: cbuc
+  labels:
+    app: redis
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      name: redis
+  template:
+    metadata:
+      labels:
+        name: redis
+    spec:
+      containers:
+        - name: redis
+          image: redis:5.0.12
+          volumeMounts:
+          - name: redis-volumn
+            mountPath: "/data"
+          - name: config-map
+            mountPath: "/usr/local/etc"
+          command: ["/bin/sh", "-c","redis-server","/usr/local/etc/redis/redis.conf"]
+      volumes:
+      - name: redis-volumn
+        hostPath: 
+          path: "/data/redis/data"
+          type: DirectoryOrCreate
+      - name: config-map
+        configMap:
+          name: redis-conf
+          items:
+            - key: redis.conf
+              path: redis/redis.conf
+---
+#redis service
+apiVersion: v1
+kind: Service
+metadata:
+  name: redis-svc
+  namespace: cbuc
+  labels:
+    name: redis
+spec:
+  type: NodePort
+  ports:
+    - port: 6379
+      protocol: TCP
+      targetPort: 6379
+      name: http
+      nodePort: 30001
+  selector:
+    name: redis
+#

@@ -1,0 +1,97 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: nacos-configmap
+  namespace: cbuc
+data:
+  mysql.db.host: "47.102.205.127"
+  mysql.db.name: "nacos_config"
+  mysql.port: "3306"
+  mysql.user: "root"
+  mysql.password: "root"
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nacos
+  namespace: cbuc
+  labels:
+    app: nacos
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: nacos
+  template:
+    metadata:
+      labels:
+        app: nacos
+      annotations:
+        pod.alpha.kubernetes.io/initialized: "true"
+    spec:
+      nodeName: node01
+      containers:
+        - name: nacos-pod
+          imagePullPolicy: Always
+          image: nacos/nacos-server:latest
+          resources:
+            requests:
+              memory: "1Gi"
+              cpu: "500m"
+          ports:
+            - containerPort: 8848
+              name: client
+          env:
+            - name: SPRING_DATASOURCE_PLATFORM
+              value: "mysql"
+            - name: NACOS_REPLICAS
+              value: "1"
+            - name: MYSQL_SERVICE_DB_NAME
+              value: "nacos"
+            - name: MYSQL_SERVICE_HOST
+              value: "192.168.108.100"
+            - name: MYSQL_SERVICE_PORT
+              value: "30003"
+            - name: MYSQL_SERVICE_USER
+              value: "root"
+            - name: MYSQL_SERVICE_PASSWORD
+              value: "mysql"
+            - name: NACOS_SERVER_PORT
+              value: "8848"
+            - name: PREFER_HOST_MODE
+              value: "hostname"
+            - name: NACOS_SERVERS
+              value: "nacos-0.nacos-headless.default.svc.cluster.local:8848"
+            - name: MODE
+              value: standalone
+          volumeMounts:
+            - name: data-volumes
+              mountPath: "/home/nacos/data"
+            - name: logs-volumes
+              mountPath: "/home/nacos/logs"
+      volumes:
+        - name: data-volumes
+          hostPath:
+            path: "/data/nacos/data"
+            type: DirectoryOrCreate
+        - name: logs-volumes
+          hostPath:
+            path: "/data/nacos/logs"
+            type: DirectoryOrCreate
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: nacos-svc
+  namespace: cbuc
+  labels:
+    app: nacos
+spec:
+  ports:
+    - port: 8848
+      name: server
+      targetPort: 8848
+      nodePort: 30002 # 添加 nodePort 曝光控制台
+  selector:
+    app: nacos
+  type: NodePort

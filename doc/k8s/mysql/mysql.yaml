@@ -1,0 +1,44 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mysql-deploy
+  namespace: cbuc
+  labels:
+    app: mysql
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mysql
+  template:
+    metadata:
+      labels: 
+        app: mysql
+    spec:
+      containers:
+      - name: mysql
+        image: mysql
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 3306
+        env:
+        - name: MYSQL_ROOT_PASSWORD
+          value: "mysql"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: mysql-service
+  namespace: cbuc
+  labels:
+    app: mysql
+spec:
+  type: NodePort
+  ports:
+    - port: 3306
+      protocol: TCP
+      targetPort: 3306
+      name: http
+      nodePort: 30003
+  selector:
+    app: mysql
