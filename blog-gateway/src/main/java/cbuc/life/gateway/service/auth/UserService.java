@@ -9,4 +9,12 @@ import com.baomidou.mybatisplus.extension.service.IService;
  * @description: user service
  */
 public interface UserService extends IService<User> {
+
+    /**
+     * 用户注册
+     *
+     * @param user 用户信息
+     * @return 处理状态
+     */
+    Integer doRegister(User user);
 }

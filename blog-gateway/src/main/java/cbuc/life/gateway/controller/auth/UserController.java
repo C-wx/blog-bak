@@ -13,10 +13,7 @@ import org.apache.shiro.authz.AuthorizationException;
 import org.apache.shiro.subject.Subject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 
 /**
@@ -24,6 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
  * @data: 2021-04-18 18:11
  * @description:
  */
+@CrossOrigin
 @RestController
 @RequestMapping("/userApi")
 public class UserController {
@@ -37,7 +35,7 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    @ApiOperation(value = "登录接口")
+    @ApiOperation("登录接口")
     public Result login(@RequestBody User user) {
         if (StringUtils.isEmpty(user.getUserName()) || StringUtils.isEmpty(user.getUserPwd())) {
             return Result.error("请输入用户名和密码");
@@ -49,7 +47,6 @@ public class UserController {
             //进行验证，这里可以捕获异常，然后返回对应信息
             subject.login(usernamePasswordToken);
             subject.checkRole("admin");
-            subject.checkPermissions("query", "add");
         } catch (UnknownAccountException e) {
             LOGGER.error("用户名不存在！", e);
             return Result.error("用户名不存在");
@@ -61,6 +58,13 @@ public class UserController {
             return Result.error("没有权限");
         }
         return Result.success(userService.getById(1));
+    }
+
+    @PostMapping("/register")
+    @ApiOperation("注册接口")
+    public Result register(@RequestBody User user) {
+        System.out.println(user);
+        return Result.success(userService.doRegister(user) == 1 ? "注册成功" : "注册失败");
     }
 
 

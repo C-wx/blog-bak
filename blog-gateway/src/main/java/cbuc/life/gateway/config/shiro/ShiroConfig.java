@@ -152,7 +152,7 @@ public class ShiroConfig {
         shiroPermissionFactory.setFilters(filters);
 
         Map<String, String> filterChainDefinitionMap = new LinkedHashMap<>();
-        filterChainDefinitionMap.put("/**", "authc");
+        filterChainDefinitionMap.put("/**/**", "anon");
         //从上往下执行 优先执行的放前面
         //anon 允许匿名访问（资源文件）
         //authc允许登录验证访问（所有页面）
@@ -195,8 +195,10 @@ public class ShiroConfig {
     @Bean
     public HashedCredentialsMatcher credentialsMatcher() {
         HashedCredentialsMatcher credentialsMatcher = new HashedCredentialsMatcher();
-        credentialsMatcher.setHashAlgorithmName("md5");
-        credentialsMatcher.setHashIterations(1);
+        //加密算法
+        credentialsMatcher.setHashAlgorithmName("MD5");
+        //加密次数
+        credentialsMatcher.setHashIterations(10);
         return credentialsMatcher;
     }
 
