@@ -6,10 +6,7 @@ import cbuc.life.common.entity.auth.User;
 import cbuc.life.gateway.service.auth.UserService;
 import cn.hutool.core.util.ObjectUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import org.apache.shiro.authc.AuthenticationException;
-import org.apache.shiro.authc.AuthenticationInfo;
-import org.apache.shiro.authc.AuthenticationToken;
-import org.apache.shiro.authc.SimpleAuthenticationInfo;
+import org.apache.shiro.authc.*;
 import org.apache.shiro.authz.AuthorizationInfo;
 import org.apache.shiro.authz.SimpleAuthorizationInfo;
 import org.apache.shiro.realm.AuthorizingRealm;
@@ -62,18 +59,19 @@ public class CustomRealm extends AuthorizingRealm {
      */
     @Override
     protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken authenticationToken) throws AuthenticationException {
-        if (ObjectUtil.isEmpty(authenticationToken.getPrincipal())) {
+        UsernamePasswordToken token = (UsernamePasswordToken) authenticationToken;
+        if (ObjectUtil.isEmpty(token)) {
             return null;
         }
         //获取用户信息
-        String name = authenticationToken.getPrincipal().toString();
+        String name = token.getUsername();
         QueryWrapper<User> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("user_name", name);
         User user = userService.getOne(queryWrapper);
         if (ObjectUtil.isEmpty(user)) {
             return null;
         } else {
-            return new SimpleAuthenticationInfo(name, user.getUserPwd(), ByteSource.Util.bytes(user.getUserPwd()), getName());
+            return new SimpleAuthenticationInfo(name, user.getUserPwd(), ByteSource.Util.bytes(token.getPassword()), getName());
         }
     }
 }

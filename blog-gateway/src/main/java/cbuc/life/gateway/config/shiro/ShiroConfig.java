@@ -25,7 +25,7 @@ import java.util.Map;
 /**
  * @author: cbuc
  * @data: 2021-04-19 23:11
- * @description:
+ * @description: shiro配置类
  */
 @Configuration
 public class ShiroConfig {
@@ -96,7 +96,9 @@ public class ShiroConfig {
      */
     @Bean
     public CustomRealm customAuthorizingRealm() {
-        return new CustomRealm();
+        CustomRealm customRealm = new CustomRealm();
+        customRealm.setCredentialsMatcher(credentialsMatcher());
+        return customRealm;
     }
 
     @Bean

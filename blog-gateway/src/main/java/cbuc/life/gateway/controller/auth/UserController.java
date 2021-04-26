@@ -63,7 +63,6 @@ public class UserController {
     @PostMapping("/register")
     @ApiOperation("注册接口")
     public Result register(@RequestBody User user) {
-        System.out.println(user);
         return Result.success(userService.doRegister(user) == 1 ? "注册成功" : "注册失败");
     }
 
