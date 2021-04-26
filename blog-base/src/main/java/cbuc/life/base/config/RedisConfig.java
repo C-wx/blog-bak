@@ -9,7 +9,7 @@
 //
 ///**
 // * @author: cbuc
-// * @data: 2021-04-19 21:29
+// * @date: 2021-04-19 21:29
 // * @description: redis配置类
 // */
 //@Configuration

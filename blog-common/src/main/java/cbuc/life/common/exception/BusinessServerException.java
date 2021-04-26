@@ -6,9 +6,9 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 /**
- * @Author: cwx
- * @Date: Create in 19:52 2021/4/20
- * @Description: 业务服务异常类
+ * @author: cwx
+ * @date: Create in 19:52 2021/4/20
+ * @description: 业务服务异常类
  */
 @Data
 @NoArgsConstructor

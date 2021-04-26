@@ -1,5 +1,6 @@
 package cbuc.life.gateway.config.shiro;
 
+import cbuc.life.common.entity.auth.User;
 import cbuc.life.common.entity.enums.ResponseEnum;
 import cbuc.life.common.entity.result.Result;
 import cbuc.life.gateway.util.JwtUtil;
@@ -19,9 +20,9 @@ import java.nio.charset.StandardCharsets;
 import java.util.Optional;
 
 /**
- * @Author: cwx
- * @Date: Create in 20:33 2021/4/20
- * @Description:
+ * @author: cwx
+ * @date: Create in 20:33 2021/4/20
+ * @description: 自定义认证过滤器
  */
 public class AuthenticationFilter extends FormAuthenticationFilter {
     public AuthenticationFilter() {
@@ -36,7 +37,8 @@ public class AuthenticationFilter extends FormAuthenticationFilter {
                 return true;
             }
             String token = JwtUtil.getRequestToken(servletRequest);
-            String userName = Optional.ofNullable(LoginUtil.getUser().getUserName()).orElseGet(() -> JwtUtil.getUsername(token));
+            User user = Optional.ofNullable(LoginUtil.getUser()).orElseGet(User::new);
+            String userName = Optional.ofNullable(user.getUserName()).orElseGet(() -> JwtUtil.getUsername(token));
             if (StringUtils.isNotBlank(userName)) {
                 return true;
             }

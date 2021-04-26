@@ -7,7 +7,7 @@ import org.springframework.cloud.openfeign.EnableFeignClients;
 
 /**
  * @author: cbuc
- * @data: 2021-04-16 21:21
+ * @date: 2021-04-16 21:21
  * @description: admin模块启动类
  */
 @EnableFeignClients

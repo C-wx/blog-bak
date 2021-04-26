@@ -13,9 +13,9 @@ import javax.servlet.http.HttpSession;
 import java.util.Objects;
 
 /**
- * @Author: cwx
- * @Date: Create in 21:00 2021/4/20
- * @Description: 登录工具类
+ * @author: cwx
+ * @date: Create in 21:00 2021/4/20
+ * @description: 登录工具类
  */
 public class LoginUtil {
 

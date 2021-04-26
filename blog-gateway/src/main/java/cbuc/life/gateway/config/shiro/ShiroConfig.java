@@ -24,7 +24,7 @@ import java.util.Map;
 
 /**
  * @author: cbuc
- * @data: 2021-04-19 23:11
+ * @date: 2021-04-19 23:11
  * @description: shiro配置类
  */
 @Configuration
@@ -154,7 +154,7 @@ public class ShiroConfig {
         shiroPermissionFactory.setFilters(filters);
 
         Map<String, String> filterChainDefinitionMap = new LinkedHashMap<>();
-        filterChainDefinitionMap.put("/**/**", "anon");
+        filterChainDefinitionMap.put("/**/**", "authc");
         //从上往下执行 优先执行的放前面
         //anon 允许匿名访问（资源文件）
         //authc允许登录验证访问（所有页面）

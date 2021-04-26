@@ -7,7 +7,7 @@ import lombok.Data;
 
 /**
  * @author: cbuc
- * @data: 2021-04-18 16:26
+ * @date: 2021-04-18 16:26
  * @description: 响应结果类
  */
 @Data

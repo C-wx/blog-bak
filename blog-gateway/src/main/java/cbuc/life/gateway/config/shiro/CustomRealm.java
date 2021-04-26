@@ -1,6 +1,6 @@
 package cbuc.life.gateway.config.shiro;
 
-import cbuc.life.common.entity.auth.Permissions;
+import cbuc.life.common.entity.auth.Resource;
 import cbuc.life.common.entity.auth.Role;
 import cbuc.life.common.entity.auth.User;
 import cbuc.life.gateway.service.auth.UserService;
@@ -16,8 +16,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * @author: cbuc
- * @data: 2021-04-19 22:53
- * @description:
+ * @date: 2021-04-19 22:53
+ * @description: 自定义realm
  */
 public class CustomRealm extends AuthorizingRealm {
 
@@ -32,20 +32,17 @@ public class CustomRealm extends AuthorizingRealm {
      */
     @Override
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principalCollection) {
-        //获取登录用户名
+        //获取登录用户
         String name = (String) principalCollection.getPrimaryPrincipal();
-        //查询用户名称
-        QueryWrapper<User> queryWrapper = new QueryWrapper<>();
-        queryWrapper.eq("user_name", name);
-        User user = userService.getOne(queryWrapper);
+        User user = userService.getUserByName(name);
         //添加角色和权限
         SimpleAuthorizationInfo simpleAuthorizationInfo = new SimpleAuthorizationInfo();
         for (Role role : user.getRoles()) {
             //添加角色
             simpleAuthorizationInfo.addRole(role.getRoleName());
             //添加权限
-            for (Permissions permissions : role.getPermissions()) {
-                simpleAuthorizationInfo.addStringPermission(permissions.getPermissionsName());
+            for (Resource resource : role.getResources()) {
+                simpleAuthorizationInfo.addStringPermission(resource.getResourceName());
             }
         }
         return simpleAuthorizationInfo;

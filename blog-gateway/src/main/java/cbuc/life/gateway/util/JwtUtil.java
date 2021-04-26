@@ -12,9 +12,9 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
 
 /**
- * @Author: cwx
- * @Date: Create in 20:44 2021/4/20
- * @Description: jwt工具类
+ * @author: cwx
+ * @date: Create in 20:44 2021/4/20
+ * @description: jwt工具类
  */
 public class JwtUtil {
 
