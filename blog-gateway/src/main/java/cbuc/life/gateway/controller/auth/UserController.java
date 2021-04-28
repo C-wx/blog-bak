@@ -52,5 +52,11 @@ public class UserController {
         }
     }
 
+    @GetMapping("/logout")
+    @ApiOperation(("退出登录"))
+    public Result logout() {
+
+        return Result.success();
+    }
 
 }
