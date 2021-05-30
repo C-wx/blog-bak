@@ -1,0 +1,66 @@
+server:
+  port: 8000
+
+spring:
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 192.168.108.100:30002
+        namespace: 920dca63-28b3-414b-9b5b-764247f024f5
+        cluster-name: DEFAULT
+  # mysql
+  druid:
+    initial-size: 5
+    max-active: 20
+    min-idle: 5
+    max-wait: 30000
+  datasource:
+    type: com.alibaba.druid.pool.DruidDataSource
+    driverClassName: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://192.168.108.100:30003/blog?useUnicode=true&characterEncoding=utf-8&serverTimezone=Asia/Shanghai
+    username: root
+    password: mysql
+    initialize: true
+    filters: stat,wall
+    validationQuery: SELECT 1
+    testWhileIdle: true
+    testOnBorrow: false
+    testOnReturn: false
+  # redis
+  redis:
+    database: 0
+    host: 192.168.108.100
+    port: 30001
+    password: 123456
+    timeout: 3000
+    jedis:
+      pool:
+        max-active: 105
+        max-idle: 10
+        min-idle: 0
+
+# mybatis-plus 配置
+mybatis-plus:
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+  mapper-locations: classpath:mapper/**/*.xml
+
+
+# 网关配置
+zuul:
+  routes:
+    scmp-admin:
+      path: /admin/**
+      serviceId: scmp-admin
+      sensitiveHeaders: "*"
+  host:
+    socket-timeout-millis: 60000
+    connect-timeout-millis: 60000
+    max-per-route-connections: 500
+  #处理http请求头为空的问题
+  sensitiveHeaders:
+  retryable: true
+
+feign:
+  sentinel:
+    enabled: true
