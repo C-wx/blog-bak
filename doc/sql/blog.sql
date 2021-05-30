@@ -3,19 +3,64 @@
 
  Source Server         : vm-mysql
  Source Server Type    : MySQL
- Source Server Version : 80024
+ Source Server Version : 80025
  Source Host           : 192.168.108.100:30003
  Source Schema         : blog
 
  Target Server Type    : MySQL
- Target Server Version : 80024
+ Target Server Version : 80025
  File Encoding         : 65001
 
- Date: 26/04/2021 23:22:19
+ Date: 30/05/2021 21:20:40
 */
 
 SET NAMES utf8mb4;
 SET FOREIGN_KEY_CHECKS = 0;
+
+-- ----------------------------
+-- Table structure for cb_article
+-- ----------------------------
+DROP TABLE IF EXISTS `cb_article`;
+CREATE TABLE `cb_article`  (
+  `id` bigint(0) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `user_id` bigint(0) NULL DEFAULT NULL COMMENT '用户ID',
+  `category_id` bigint(0) NULL DEFAULT NULL COMMENT '分类ID',
+  `qrcode_path` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '文章二维码地址',
+  `title` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '文章标题',
+  `keywords` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '文章关键字，优化搜索 (以 , 分隔)',
+  `cover_image` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '文章封面图片',
+  `content` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL COMMENT '文章内容',
+  `description` varchar(300) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '文章简介，最多200字',
+  `type` tinyint(1) NULL DEFAULT NULL COMMENT '原创状态 (1：原创   2：转载)',
+  `top_status` tinyint(1) NULL DEFAULT 0 COMMENT '是否置顶  (0：否  1：是)',
+  `recommend_status` tinyint(1) NULL DEFAULT 0 COMMENT '是否推荐  (0：否  1：是)',
+  `comment_status` tinyint(1) NULL DEFAULT 1 COMMENT '是否开启评论  (0：否  1：是)',
+  `gmt_create` datetime(0) NULL DEFAULT CURRENT_TIMESTAMP(0) COMMENT '创建时间',
+  `gmt_modify` datetime(0) NULL DEFAULT CURRENT_TIMESTAMP(0) ON UPDATE CURRENT_TIMESTAMP(0) COMMENT '更新时间',
+  `operator` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '操作人',
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '博客-文章表' ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of cb_article
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for cb_article_tag
+-- ----------------------------
+DROP TABLE IF EXISTS `cb_article_tag`;
+CREATE TABLE `cb_article_tag`  (
+  `id` bigint(0) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '主键ID',
+  `article_id` bigint(0) NULL DEFAULT NULL COMMENT '文章ID',
+  `tag_id` bigint(0) NULL DEFAULT NULL COMMENT '标签ID',
+  `gmt_create` datetime(0) NULL DEFAULT CURRENT_TIMESTAMP(0) COMMENT '创建时间',
+  `operator` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '操作人',
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '博客-文章标签表' ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of cb_article_tag
+-- ----------------------------
 
 -- ----------------------------
 -- Table structure for cb_resource
@@ -31,7 +76,7 @@ CREATE TABLE `cb_resource`  (
   `gmt_create` datetime(0) NULL DEFAULT CURRENT_TIMESTAMP(0) COMMENT '创建时间',
   `gmt_modify` datetime(0) NULL DEFAULT CURRENT_TIMESTAMP(0) ON UPDATE CURRENT_TIMESTAMP(0) COMMENT '更新时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '博客-菜单表' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '博客-菜单表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of cb_resource
@@ -53,7 +98,7 @@ CREATE TABLE `cb_role`  (
   `gmt_create` datetime(0) NULL DEFAULT CURRENT_TIMESTAMP(0) COMMENT '创建时间',
   `gmt_modify` datetime(0) NULL DEFAULT CURRENT_TIMESTAMP(0) ON UPDATE CURRENT_TIMESTAMP(0) COMMENT '更新时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '博客-角色表' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '博客-角色表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of cb_role
@@ -71,12 +116,29 @@ CREATE TABLE `cb_role_resource`  (
   `gmt_create` datetime(0) NULL DEFAULT CURRENT_TIMESTAMP(0) COMMENT '创建时间',
   `gmt_modify` datetime(0) NULL DEFAULT CURRENT_TIMESTAMP(0) ON UPDATE CURRENT_TIMESTAMP(0) COMMENT '更新时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '博客-角色资源表' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '博客-角色资源表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of cb_role_resource
 -- ----------------------------
 INSERT INTO `cb_role_resource` VALUES (1, 1, 1, '2021-04-26 13:19:14', '2021-04-26 13:19:14');
+
+-- ----------------------------
+-- Table structure for cb_tag
+-- ----------------------------
+DROP TABLE IF EXISTS `cb_tag`;
+CREATE TABLE `cb_tag`  (
+  `id` bigint(0) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '主键ID',
+  `icon` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '标签图片',
+  `name` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '标签名称',
+  `description` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '标签描述',
+  `gmt_create` datetime(0) NULL DEFAULT CURRENT_TIMESTAMP(0) COMMENT '创建时间',
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '标签表' ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of cb_tag
+-- ----------------------------
 
 -- ----------------------------
 -- Table structure for cb_user
@@ -114,7 +176,7 @@ CREATE TABLE `cb_user_role`  (
   `gmt_create` datetime(0) NULL DEFAULT CURRENT_TIMESTAMP(0) COMMENT '创建时间',
   `gmt_modify` datetime(0) NULL DEFAULT CURRENT_TIMESTAMP(0) ON UPDATE CURRENT_TIMESTAMP(0) COMMENT '更新时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '博客-角色资源表' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '博客-角色资源表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of cb_user_role
