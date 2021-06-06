@@ -24,6 +24,14 @@ spec:
         env:
         - name: MYSQL_ROOT_PASSWORD
           value: "mysql"
+        volumeMounts:
+          - name: mysql-volumes
+            mountPath: "/var/lib/mysql"
+      volumes:
+        - name: mysql-volumes
+          hostPath:
+            path: "/data/mysql"
+            type: DirectoryOrCreate
 ---
 apiVersion: v1
 kind: Service
